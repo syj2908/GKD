@@ -1,0 +1,58 @@
+dataset:
+  num_classes: 21
+  training:
+    video_mp4_path: ./TH14_validation_set_mp4/
+    video_info_path: thumos_annotations/val_video_info.csv
+    video_anno_path: thumos_annotations/val_Annotation_ours.csv
+    video_data_path: ./datasets/thumos14/validation_npy/
+    clip_length: 256
+    clip_stride: 30
+    crop_size: 96
+  testing:
+    video_mp4_path: ./video_data/TH14_test_set_mp4/
+    video_info_path: thumos_annotations/test_video_info.csv
+    video_anno_path: thumos_annotations/test_Annotation_ours.csv
+    video_data_path: ./datasets/thumos14/test_npy/
+    crop_size: 96
+    clip_length: 256
+    clip_stride: 128
+
+model:
+  in_channels: 3
+  freeze_bn: true
+  freeze_bn_affine: true
+  backbone_model: ./models/i3d_models/rgb_imagenet.pt
+
+training:
+  batch_size: 1
+  learning_rate: 1e-6
+  weight_decay: 1e-3
+  max_epoch: 200
+  focal_loss: true
+  pretrained_path: ./models/thumos14/teacher/checkpoint-20.ckpt
+  pretrained_path_cvae: ./models/thumos14/teacher/checkpoint-20_cvae.ckpt
+  # new teacher and pretrained weight for student
+  pretrained_path_new: ./models/thumos14/pretrained/pretrained_tea.ckpt
+  pretrained_path_cvae_new: ./models/thumos14/teacher/checkpoint-20_cvae_new.ckpt
+  pretrained_weight: ./models/thumos14/pretrained/pretrained_stu.ckpt
+  best_student: ./models/thumos14/student/checkpoint-183.ckpt
+  checkpoint_path_v1: ./models/thumos14/student/
+  checkpoint_path_v2: ./models/thumos14/student_new/
+  checkpoint_path_v3: ./models/thumos14/student_new_2/
+  checkpoint_path_v4: ./models/thumos14/student_v4/
+  checkpoint_path_v5: ./models/thumos14/student_v5/
+  checkpoint_path_v6: ./models/thumos14/student_v6/
+  checkpoint_path_v7: ./models/thumos14/student_v7/
+  checkpoint_path_v8: ./models/thumos14/student_v8/
+  checkpoint_path_v9: ./models/thumos14/student_v9/
+  random_seed: 2020
+
+
+testing:
+  conf_thresh: 0.01
+  top_k: 5000
+  nms_thresh: 0.5
+  nms_sigma: 0.01
+  checkpoint_path: ./models/thumos14/checkpoint-rgb.ckpt
+  output_path: ./output
+  output_json: detection_results.json
